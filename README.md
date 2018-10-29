@@ -18,13 +18,21 @@ Measureboard is released under the permissive MIT License. To contribute please 
 
 The frontend to the software is a simple [Vue](https://vuejs.org/) application with a small amount of state handling for favourites and room filtering. The Semantic UI Vue plugin is used to provide Semantic UI components to render.
 
-The backend data source for the application is a Google Sheet using the following [template](https://docs.google.com/spreadsheets/d/1NnJroBAvuceVG3nRrYKySbXVRd5rez9gP0qiF7lKCrc).
+The backend data source for the application is a Google Sheet using the following [template](https://docs.google.com/spreadsheets/d/1NnJroBAvuceVG3nRrYKySbXVRd5rez9gP0qiF7lKCrc). This is currently been refactored to use Firestore (Firebase) instead.
 
 Updates to the Google Sheet (e.g., room changes, talk title changes) are pushed to the front end in real time using [Pusher](https://pusher.com/) which acts as a simple pubsub messaging interface over websockets. Updates to the Google Sheet are typically reflected in the interface within 2-5 seconds and do not require the client to refresh the web page.
 
 ## Setup
 
-Configure the `index.html` file and fill in the relevant Google Sheet URL and Pusher credentials. You will need a free (or paid) Pusher account in order to use the sync. A free Pusher account allows for 100 concurrent connections and 200k messages per day.
+Configure the `index.html` file and fill in the relevant Google Sheet URL, Pusher credentials and GTM container ID. You will need a free (or paid) Pusher account in order to use the sync. A free Pusher account allows for 100 concurrent connections and 200k messages per day.
+
+### Google Tag Manager
+
+You'll need to set up a container for GTM and update `index.html` with that container in two places. Then set up the container to do the tagging.
+
+1. Set up a variable for dataLayer variable `title` to take the session title when pushed to the dataLayer.
+2. Set up triggers for custom events `Add favourite`, `Board update` and `Removed favourite`.
+3. Set up tags for `All pages` and then custom events for the other triggers.
 
 ## Hosting
 
